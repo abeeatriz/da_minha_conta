@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 class MonthSelector extends StatelessWidget {
@@ -18,6 +19,8 @@ class MonthSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting('pt_BR');
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -32,9 +35,9 @@ class MonthSelector extends StatelessWidget {
             onPressed: () {
               onCurrentMonthPressed();
             },
-            style: ButtonStyle(fixedSize: MaterialStateProperty.resolveWith<Size?>((states) => const Size.fromWidth(100))),
+            style: ButtonStyle(fixedSize: MaterialStateProperty.resolveWith<Size?>((states) => const Size.fromWidth(112))),
             child: Text(
-              DateFormat(thisYear == selectedMonth.year ? 'MMMM' : 'MMMM yyyy', 'pt').format(selectedMonth),
+              DateFormat(thisYear == selectedMonth.year ? 'MMMM' : 'MMMM yyyy', 'pt_BR').format(selectedMonth),
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             )),
         IconButton(
