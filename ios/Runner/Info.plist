@@ -45,5 +45,9 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Permissão para acessar a galeria de fotos</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Permissão para acessar a câmera</string>
 </dict>
 </plist>
