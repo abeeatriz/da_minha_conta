@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'dart:io';
+
 class NovaReceita extends StatefulWidget {
   @override
   _NovaReceitaState createState() => _NovaReceitaState();
@@ -255,11 +257,8 @@ class NovaReceitaFormState extends State<NovaReceitaForm> {
               _selectImage();
             },
             child: InputDecorator(
-              decoration: InputDecoration(
-                labelText: 'Anexar imagem',
-                hintText: _imagem == null ? 'Selecione uma imagem' : 'Imagem selecionada',
-              ),
-              child: SizedBox(),
+              decoration: const InputDecoration(labelText: 'Anexar imagem'),
+              child: _imagem != null ? Image.file(File(_imagem!)) : const SizedBox(),
             ),
           ),
         ],
