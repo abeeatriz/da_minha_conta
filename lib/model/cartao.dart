@@ -20,13 +20,13 @@ class Cartao {
       'id': id,
       'descricao': descricao,
       'limite': limite,
-      'dataVencimento': dataVencimento.toIso8601String(),
+      'data_vencimento': dataVencimento.toIso8601String(),
       'conta': conta?.id,
     };
   }
 
   @override
   String toString() {
-    return 'Cartao{id: $id, limite: $limite, descricao: $descricao, dataVencimento: $dataVencimento, conta: $conta}';
+    return 'Cartao{id: $id, limite: $limite, descricao: $descricao, data_vencimento: $dataVencimento, conta: $conta}';
   }
 }
