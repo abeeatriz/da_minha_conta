@@ -21,7 +21,7 @@ class Cartao {
       'descricao': descricao,
       'limite': limite,
       'dataVencimento': dataVencimento.toIso8601String(),
-      'conta': conta,
+      'conta': conta?.id,
     };
   }
 
