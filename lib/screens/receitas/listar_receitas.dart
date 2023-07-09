@@ -1,3 +1,4 @@
+import 'package:da_minha_conta/components/month_selector.dart';
 import 'package:da_minha_conta/dao/conta_dao.dart';
 import 'package:da_minha_conta/dao/database_helper.dart';
 import 'package:da_minha_conta/dao/receita_dao.dart';
@@ -20,6 +21,7 @@ class ReceitasScreenState extends State<ReceitasScreen> {
   late ReceitaDAO _receitaDAO;
 
   List<Receita> receitas = [];
+  late DateTime selectedMonth;
 
   double calcularTotalReceitas() {
     double total = 0;
@@ -36,14 +38,36 @@ class ReceitasScreenState extends State<ReceitasScreen> {
     _contaDAO = ContaDAO(_databaseHelper);
     _receitaDAO = ReceitaDAO(_databaseHelper, _transacaoDAO, _contaDAO);
 
+    selectedMonth = DateTime.now();
     carregarReceitas();
   }
 
   Future<void> carregarReceitas() async {
-    List<Receita> receitasCarregadas = await _receitaDAO.getReceitas();
+    List<Receita> receitasCarregadas = await _receitaDAO.getReceitasPorMes(selectedMonth.month, selectedMonth.year);
     setState(() {
       receitas = receitasCarregadas;
     });
+  }
+
+    void goToPreviousMonth(DateTime previousMonth) {
+    setState(() {
+      selectedMonth = previousMonth;
+    });
+    carregarReceitas();
+  }
+
+  void goToCurrentMonth() {
+    setState(() {
+      selectedMonth = DateTime.now();
+    });
+    carregarReceitas();
+  }
+
+  void goToNextMonth(DateTime nextMonth) {
+    setState(() {
+      selectedMonth = nextMonth;
+    });
+    carregarReceitas();
   }
 
   @override
@@ -63,6 +87,12 @@ class ReceitasScreenState extends State<ReceitasScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+          ),
+          MonthSelector(
+            selectedMonth: selectedMonth,
+            onPreviousMonthPressed: goToPreviousMonth,
+            onCurrentMonthPressed: goToCurrentMonth,
+            onNextMonthPressed: goToNextMonth,
           ),
           Expanded(
             child: ListView.builder(

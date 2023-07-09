@@ -64,6 +64,33 @@ class ReceitaDAO {
     return receitas;
   }
 
+// Função para obter as receitas do banco de dados de um determinado mês
+Future<List<Receita>> getReceitasPorMes(int month, int year) async {
+  final db = await _databaseHelper.database;
+  final List<Map<String, dynamic>> maps = await db.rawQuery('''
+    SELECT r.* 
+    FROM receita r 
+    INNER JOIN transacao t ON r.transacao = t.id
+    WHERE strftime('%m', t.data) = ? AND strftime('%Y', t.data) = ?
+  ''', [month.toString().padLeft(2, '0'), year.toString()]);
+
+  List<Receita> receitas = [];
+
+  for (var map in maps) {
+    final transacaoId = map['transacao'];
+    Transacao? transacao = await _transacaoDAO.getTransacao(transacaoId);
+    final contaId = map['conta'];
+    Conta? conta = await _contaDAO.getConta(contaId);
+
+    if (transacao != null && conta != null) {
+      Receita receita = Receita(transacao: transacao, conta: conta);
+      receitas.add(receita);
+    }
+  }
+
+  return receitas;
+}
+
   // Função para obter uma receita pelo ID
   Future<Receita?> getReceita(int transacaoId) async {
     final db = await _databaseHelper.database;
