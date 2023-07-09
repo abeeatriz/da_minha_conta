@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class MonthSelector extends StatelessWidget {
+  final int thisYear = DateTime.now().year;
   final DateTime selectedMonth;
   final Function(DateTime) onPreviousMonthPressed;
   final Function() onCurrentMonthPressed;
   final Function(DateTime) onNextMonthPressed;
 
-  const MonthSelector({
+  MonthSelector({
     Key? key,
     required this.selectedMonth,
     required this.onPreviousMonthPressed,
@@ -28,14 +29,14 @@ class MonthSelector extends StatelessWidget {
           },
         ),
         TextButton(
-          child: Text(
-            DateFormat('MMMM yyyy').format(selectedMonth),
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          onPressed: () {
-            onCurrentMonthPressed();
-          },
-        ),
+            onPressed: () {
+              onCurrentMonthPressed();
+            },
+            style: ButtonStyle(fixedSize: MaterialStateProperty.resolveWith<Size?>((states) => const Size.fromWidth(100))),
+            child: Text(
+              DateFormat(thisYear == selectedMonth.year ? 'MMMM' : 'MMMM yyyy', 'pt').format(selectedMonth),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            )),
         IconButton(
           icon: const Icon(Icons.chevron_right_rounded),
           onPressed: () {
