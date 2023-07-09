@@ -78,9 +78,9 @@ class _NovoCartaoState extends State<NovoCartao> {
                   }
 
                   Cartao cartao = Cartao(
-                      descricao: descricao,
-                      limite: limite,
-                      dataVencimento: dataVencimento,
+                    descricao: descricao,
+                    limite: limite,
+                    dataVencimento: dataVencimento,
                       conta: conta);
 
                   int idInserido = await CartaoDAO(_databaseHelper, _contaDAO)
@@ -138,6 +138,12 @@ class _NovoCartaoState extends State<NovoCartao> {
                   labelText: 'Limite',
                   prefixText: 'R\$',
                 ),
+                validator: (value) {
+                  if (value?.isEmpty == true) {
+                    return 'Por favor, informe a descrição';
+                  }
+                  return null;
+                },
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 16.0),
