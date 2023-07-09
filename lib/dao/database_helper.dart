@@ -102,6 +102,8 @@ class DatabaseHelper {
             cartao INTEGER REFERENCES cartao(id)
           )
         ''');
+
+        insertDefaultDataInDB(db);
       },
     );
   }
@@ -110,5 +112,11 @@ class DatabaseHelper {
     final path = await getDatabasesPath();
     final databasePath = join(path, _databaseName);
     await deleteDatabase(databasePath);
+  }
+
+  void insertDefaultDataInDB(Database db) async {
+    Map<String, dynamic> carteira = {"saldo": 0.0, "banco": "Outro", "descricao": "Carteira"};
+
+    await db.insert('conta', carteira);
   }
 }
