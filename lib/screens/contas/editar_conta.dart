@@ -16,7 +16,7 @@ class EditarConta extends StatefulWidget {
 
 class EditarContaState extends State<EditarConta> {
   late TextEditingController _saldoController;
-  late TextEditingController _descricaoController;
+  final TextEditingController _descricaoController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   String? _banco;
