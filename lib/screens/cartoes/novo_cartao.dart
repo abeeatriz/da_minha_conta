@@ -66,8 +66,7 @@ class _NovoCartaoState extends State<NovoCartao> {
               onPressed: () async {
                 if (_formKey.currentState?.validate() == true) {
                   String descricao = _descricaoController.text;
-                  double limite =
-                      double.parse(formatarSeparador(_limiteController.text));
+                  double limite = double.parse(formatarSeparador(_limiteController.text));
                   DateTime dataVencimento = _dataVencimento;
                   int? contaId = _contaSelecionada;
 
@@ -77,14 +76,9 @@ class _NovoCartaoState extends State<NovoCartao> {
                     conta = await _contaDAO.getConta(contaId);
                   }
 
-                  Cartao cartao = Cartao(
-                    descricao: descricao,
-                    limite: limite,
-                    dataVencimento: dataVencimento,
-                      conta: conta);
+                  Cartao cartao = Cartao(descricao: descricao, limite: limite, dataVencimento: dataVencimento, conta: conta);
 
-                  int idInserido = await CartaoDAO(_databaseHelper, _contaDAO)
-                      .insertCartao(cartao);
+                  int idInserido = await CartaoDAO(_databaseHelper, _contaDAO).insertCartao(cartao);
 
                   if (idInserido != 0) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -175,12 +169,6 @@ class _NovoCartaoState extends State<NovoCartao> {
                     child: Text(conta.descricao),
                   );
                 }).toList(),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Por favor, selecione a conta';
-                  }
-                  return null;
-                },
               ),
             ],
           ),
