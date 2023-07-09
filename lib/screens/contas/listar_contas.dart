@@ -1,10 +1,10 @@
 import 'package:da_minha_conta/dao/conta_dao.dart';
 import 'package:da_minha_conta/dao/database_helper.dart';
 import 'package:da_minha_conta/model/conta.dart';
+import 'package:da_minha_conta/screens/contas/editar_conta.dart';
 import 'package:flutter/material.dart';
 
 class ListarContas extends StatefulWidget {
-
   const ListarContas({Key? key}) : super(key: key);
 
   @override
@@ -44,6 +44,16 @@ class ListarContasState extends State<ListarContas> {
             leading: const Icon(Icons.attach_money),
             title: Text(descricao),
             subtitle: Text('Saldo: R\$ $saldo'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditarConta(
+                    conta: conta,
+                  ),
+                ),
+              );
+            },
           );
         },
       ),
