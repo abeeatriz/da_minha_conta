@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:da_minha_conta/services/ExchangeRate.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
@@ -30,6 +31,7 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
 
   @override
   void initState() {
+    HttpOverrides.global = MyHttpOverrides();
     super.initState();
     fetchCurrencies();
   }
@@ -104,7 +106,8 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
 
     // Perform currency conversion
     final inputValue = _inputController.numberValue;
-    double convertedValue = _rate?.bid ?? 0 * inputValue;
+    double bid = _rate?.bid ?? 0;
+    double convertedValue = bid * inputValue;
 
     setState(() {
       _convertedValue = convertedValue;
@@ -175,5 +178,14 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
         ),
       ),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+    ..badCertificateCallback =
+     (X509Certificate cert, String host, int port) => true;
   }
 }
