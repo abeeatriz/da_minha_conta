@@ -69,9 +69,31 @@ class HomePage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-                  Icon(Icons.remove_circle, size: 48.0),
+                  Icon(Icons.remove_circle, size: 48.0, color: Colors.red),
                   SizedBox(height: 8.0),
                   Text('Nova Despesa', textAlign: TextAlign.center),
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const NovaDespesaCartao()),
+              );
+            },
+            child: Card(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(
+                    Icons.credit_card,
+                    size: 48.0,
+                    color: Colors.red,
+                  ),
+                  SizedBox(height: 8.0),
+                  Text('Nova despesa no Cartão', textAlign: TextAlign.center),
                 ],
               ),
             ),
@@ -126,24 +148,6 @@ class HomePage extends StatelessWidget {
                   Icon(Icons.list, size: 48.0),
                   SizedBox(height: 8.0),
                   Text('Minhas Contas', textAlign: TextAlign.center),
-                ],
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const NovaDespesaCartao()),
-              );
-            },
-            child: Card(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.list, size: 48.0),
-                  SizedBox(height: 8.0),
-                  Text('Nova despesa no Cartão', textAlign: TextAlign.center),
                 ],
               ),
             ),
