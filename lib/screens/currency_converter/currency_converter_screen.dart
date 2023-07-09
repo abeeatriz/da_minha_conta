@@ -4,13 +4,27 @@ import 'dart:io';
 import 'package:da_minha_conta/services/ExchangeRate.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart';
 
 class Currency {
   final String code;
   final String name;
 
   Currency({required this.code, required this.name});
+}
+
+Future<List<Currency>> loadCurrencies() async {
+  final jsonString = await rootBundle.loadString("../../resources/moedas.json");
+  final jsonData = json.decode(jsonString);
+
+  List<Currency> currencies = [];
+
+  jsonData.forEach((key, value) {
+    final currency = Currency(code: key, name: value);
+    currencies.add(currency);
+  });
+
+  return currencies;
 }
 
 class CurrencyConverterScreen extends StatefulWidget {
@@ -37,41 +51,12 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
   }
 
   Future<void> fetchCurrencies() async {
-    final response = await http.get(Uri.parse('https://economia.awesomeapi.com.br/json/available/uniq'));
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response.body);
+    List<Currency> currencies = await loadCurrencies();
+    currencies.sort((a, b) => a.name.compareTo(b.name));
 
-      List<Currency> currencies = [];
-
-      data.forEach((key, value) {
-        Currency currency = Currency(code: key, name: value);
-        currencies.add(currency);
-      });
-
-      currencies.sort((a, b) => a.name.compareTo(b.name));
-
-      setState(() {
-        _currencies = currencies;
-      });
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Você está offline!'),
-            content: const Text('Para utilizar essa funcionalidade, conecte-se a internet!'),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.popUntil(context, ModalRoute.withName('/'));
-                },
-                child: const Text('FECHAR'),
-              ),
-            ],
-          );
-        },
-      );
-    }
+    setState(() {
+      _currencies = currencies;
+    });
   }
 
   void convertCurrency() async {
@@ -184,8 +169,6 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-    ..badCertificateCallback =
-     (X509Certificate cert, String host, int port) => true;
+    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
   }
 }
