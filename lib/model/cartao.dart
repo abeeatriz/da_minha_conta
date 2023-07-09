@@ -7,20 +7,21 @@ class Cartao {
   final DateTime dataVencimento;
   final Conta? conta;
 
-  const Cartao(
-      {this.id,
-      required this.descricao,
-      required this.limite,
-      required this.dataVencimento,
-      this.conta});
+  const Cartao({
+    this.id,
+    required this.descricao,
+    required this.limite,
+    required this.dataVencimento,
+    this.conta,
+  });
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'descricao': descricao,
       'limite': limite,
-      'dataVencimento': dataVencimento,
-      'conta': conta
+      'dataVencimento': dataVencimento.toIso8601String(),
+      'conta': conta,
     };
   }
 
