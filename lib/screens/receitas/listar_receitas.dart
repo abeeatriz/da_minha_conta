@@ -4,6 +4,7 @@ import 'package:da_minha_conta/dao/receita_dao.dart';
 import 'package:da_minha_conta/dao/transacao_dao.dart';
 import 'package:da_minha_conta/model/receita.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ReceitasScreen extends StatefulWidget {
   const ReceitasScreen({Key? key}) : super(key: key);
@@ -70,7 +71,7 @@ class ReceitasScreenState extends State<ReceitasScreen> {
                 Receita receita = receitas[index];
                 return ListTile(
                   title: Text(receita.transacao.descricao),
-                  subtitle: Text('Data: ${receita.transacao.data.toString()}'),
+                  subtitle: Text(DateFormat('dd/MM/yyyy').format(receita.transacao.data)),
                   trailing: Text('R\$ ${receita.transacao.valor.toStringAsFixed(2)}'),
                   onTap: () {
                     // Navegar para a tela de edição da receita específica

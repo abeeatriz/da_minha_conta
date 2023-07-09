@@ -98,7 +98,7 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
               const SizedBox(height: 16.0),
               Row(
                 children: [
-                  Text('Data: ${DateFormat('dd/MM/yyyy').format(_data)}'),
+                  Text(DateFormat('dd/MM/yyyy').format(_data)),
                   const SizedBox(width: 8.0),
                   IconButton(
                     icon: const Icon(Icons.calendar_today),
