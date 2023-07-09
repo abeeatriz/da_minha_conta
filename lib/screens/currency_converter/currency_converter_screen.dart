@@ -14,7 +14,7 @@ class Currency {
 }
 
 Future<List<Currency>> loadCurrencies() async {
-  final jsonString = await rootBundle.loadString("../../resources/moedas.json");
+  final jsonString = await rootBundle.loadString("assets/moedas.json");
   final jsonData = json.decode(jsonString);
 
   List<Currency> currencies = [];
