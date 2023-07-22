@@ -32,7 +32,6 @@ class DespesaCartaoDAO {
       Cartao cartao = await getCartao(map);
 
       return DespesaCartao(
-        id: maps[0]['id'],
         despesa: despesa,
         cartao: cartao,
       );
@@ -70,7 +69,6 @@ class DespesaCartaoDAO {
       Cartao cartao = await getCartao(map);
 
       DespesaCartao despesaCartao = DespesaCartao(
-        id: map['id'],
         despesa: despesa,
         cartao: cartao,
       );
@@ -84,17 +82,17 @@ class DespesaCartaoDAO {
   Future<int> updateDespesaCartao(DespesaCartao despesaCartao) async {
     final db = await _databaseHelper.database;
     return await db.update(
-      'despesa_cartao',
+      'despesa',
       despesaCartao.toMap(),
       where: 'id = ?',
-      whereArgs: [despesaCartao.id],
+      whereArgs: [despesaCartao.despesa],
     );
   }
 
   Future<int> deleteDespesaCartao(int id) async {
     final db = await _databaseHelper.database;
     return await db.delete(
-      'despesa_cartao',
+      'despesa',
       where: 'id = ?',
       whereArgs: [id],
     );

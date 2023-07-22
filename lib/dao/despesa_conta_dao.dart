@@ -23,12 +23,10 @@ class DespesaContaDAO {
 
     List<DespesaConta> despesasContas = [];
     for (var map in maps) {
-
       Despesa despesa = await getDespesa(map);
       Conta conta = await getConta(map);
 
       DespesaConta despesaConta = DespesaConta(
-        id: map['id'],
         despesa: despesa,
         conta: conta,
       );
@@ -54,7 +52,6 @@ class DespesaContaDAO {
       Conta conta = await getConta(map);
 
       return DespesaConta(
-        id: maps[0]['id'],
         despesa: despesa,
         conta: conta,
       );
@@ -84,17 +81,17 @@ class DespesaContaDAO {
   Future<int> updateDespesaConta(DespesaConta despesaConta) async {
     final db = await _databaseHelper.database;
     return await db.update(
-      'despesa_conta',
+      'despesa',
       despesaConta.toMap(),
       where: 'id = ?',
-      whereArgs: [despesaConta.id],
+      whereArgs: [despesaConta.despesa],
     );
   }
 
   Future<int> deleteDespesaConta(int id) async {
     final db = await _databaseHelper.database;
     return await db.delete(
-      'despesa_conta',
+      'despesa',
       where: 'id = ?',
       whereArgs: [id],
     );
