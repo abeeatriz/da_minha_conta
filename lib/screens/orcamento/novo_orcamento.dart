@@ -24,6 +24,12 @@ class NovoOrcamentoState extends State<NovoOrcamento> {
   List<Categoria> _categorias = [];
   Categoria? _categoria;
 
+  @override
+  void initState() {
+    super.initState();
+    carregarCategorias();
+  }
+
   Future<void> carregarCategorias() async {
     List<Categoria> catgorias = await CategoriaDAO(_databaseHelper).getCategorias();
 
