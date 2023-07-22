@@ -1,3 +1,4 @@
+import 'package:da_minha_conta/screens/categoria/nova_categoria.dart';
 import 'package:da_minha_conta/screens/currency_converter/currency_converter_screen.dart';
 import 'package:da_minha_conta/screens/receitas/listar_receitas.dart';
 import 'package:da_minha_conta/screens/contas/nova_conta.dart';
@@ -166,6 +167,24 @@ class HomePage extends StatelessWidget {
                   Icon(Icons.list, size: 48.0),
                   SizedBox(height: 8.0),
                   Text('Receitas', textAlign: TextAlign.center),
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const NovaCategoria()),
+              );
+            },
+            child: Card(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.currency_exchange, size: 48.0),
+                  SizedBox(height: 8.0),
+                  Text('Nova Categoria', textAlign: TextAlign.center),
                 ],
               ),
             ),
