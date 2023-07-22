@@ -1,7 +1,9 @@
 import 'package:da_minha_conta/dao/cartao_dao.dart';
+import 'package:da_minha_conta/dao/categoria_dao.dart';
 import 'package:da_minha_conta/dao/conta_dao.dart';
 import 'package:da_minha_conta/dao/database_helper.dart';
 import 'package:da_minha_conta/model/cartao.dart';
+import 'package:da_minha_conta/model/categoria.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -18,18 +20,19 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
 
   final TextEditingController _descricaoController = TextEditingController();
   final TextEditingController _valorController = TextEditingController();
-  final List<String> _categorias = ['Essencial', 'Educação', 'Lazer'];
 
+  List<Categoria> _categorias = [];
   List<Cartao> _cartoes = [];
   DateTime _data = DateTime.now();
   bool _recorrenciaMensal = false;
-  String? _categoriaSelecionada;
+  Categoria? _categoriaSelecionada;
   Cartao? _cartaoSelecionado;
 
   @override
   void initState() {
     super.initState();
     carregarCartoes();
+    carregarCategorias();
   }
 
   Future<void> carregarCartoes() async {
@@ -38,6 +41,14 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
 
     setState(() {
       _cartoes = cartoesDoBanco;
+    });
+  }
+
+  Future<void> carregarCategorias() async {
+    List<Categoria> categorias = await CategoriaDAO(_databaseHelper).getCategorias();
+
+    setState(() {
+      _categorias = categorias;
     });
   }
 
@@ -123,7 +134,7 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
               const SizedBox(height: 16.0),
               // Inserir campo de imagem aqui
               const SizedBox(height: 16.0),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<Categoria>(
                 value: _categoriaSelecionada,
                 onChanged: (categoria) {
                   setState(() {
@@ -131,16 +142,16 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
                   });
                 },
                 items: _categorias.map((categoria) {
-                  return DropdownMenuItem<String>(
+                  return DropdownMenuItem<Categoria>(
                     value: categoria,
-                    child: Text(categoria),
+                    child: Text(categoria.descricao),
                   );
                 }).toList(),
                 decoration: const InputDecoration(
                   labelText: 'Categoria',
                 ),
                 validator: (categoria) {
-                  if (categoria == null || categoria.isEmpty) {
+                  if (categoria == null) {
                     return 'Por favor, selecione uma categoria';
                   }
                   return null;
