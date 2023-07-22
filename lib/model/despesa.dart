@@ -2,12 +2,12 @@ import 'package:da_minha_conta/model/categoria.dart';
 import 'package:da_minha_conta/model/transacao.dart';
 
 class Despesa {
-  final int id;
+  final int? id;
   final Transacao transacao;
   final Categoria categoria;
 
   Despesa({
-    required this.id,
+    this.id,
     required this.transacao,
     required this.categoria,
   });

@@ -2,12 +2,12 @@ import 'package:da_minha_conta/model/cartao.dart';
 import 'package:da_minha_conta/model/despesa.dart';
 
 class DespesaCartao {
-  final int id;
+  final int? id;
   final Despesa despesa;
   final Cartao cartao;
 
   DespesaCartao({
-    required this.id,
+    this.id,
     required this.despesa,
     required this.cartao,
   });
