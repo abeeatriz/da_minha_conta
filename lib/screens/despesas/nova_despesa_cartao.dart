@@ -156,10 +156,6 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
               const SizedBox(height: 16.0),
               TextFormField(
                 controller: _valorController,
-                decoration: const InputDecoration(
-                  labelText: 'Valor',
-                  prefixText: 'R\$',
-                ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value?.isEmpty == true) {
