@@ -77,28 +77,29 @@ class DatabaseHelper {
 
         await db.execute('''
           CREATE TABLE receita (
-            transacao INTEGER REFERENCES transacao(id),
+            transacao INTEGER REFERENCES transacao(id) ON DELETE CASCADE,
             conta INTEGER REFERENCES conta(id)
           )
         ''');
 
         await db.execute('''
           CREATE TABLE despesa (
-            transacao INTEGER REFERENCES transacao(id),
+            id INTEGER PRIMARY KEY,
+            transacao INTEGER REFERENCES transacao(id) ON DELETE CASCADE,
             categoria INTEGER REFERENCES categoria(id)
           )
         ''');
 
         await db.execute('''
           CREATE TABLE despesa_conta (
-            despesa INTEGER REFERENCES despesa(id),
+            despesa INTEGER REFERENCES despesa(id) ON DELETE CASCADE,
             conta INTEGER REFERENCES conta(id)
           )
         ''');
 
         await db.execute('''
           CREATE TABLE despesa_cartao (
-            despesa INTEGER REFERENCES despesa(id),
+            despesa INTEGER REFERENCES despesa(id) ON DELETE CASCADE,
             cartao INTEGER REFERENCES cartao(id)
           )
         ''');
