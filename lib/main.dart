@@ -182,9 +182,9 @@ class HomePage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-                  Icon(Icons.currency_exchange, size: 48.0),
+                  Icon(Icons.category, size: 48.0),
                   SizedBox(height: 8.0),
-                  Text('Nova Categoria', textAlign: TextAlign.center),
+                  Text('Nova Categoria de Despesa', textAlign: TextAlign.center),
                 ],
               ),
             ),

@@ -67,7 +67,7 @@ class NovaCategoriaState extends State<NovaCategoria> {
               TextFormField(
                 controller: _descricaoController,
                 decoration: const InputDecoration(
-                  labelText: 'Categoria',
+                  labelText: 'Nova Categoria de Despesa',
                 ),
                 validator: (value) {
                   if (value?.isEmpty == true) {
