@@ -1,5 +1,6 @@
 import 'package:da_minha_conta/screens/categoria/nova_categoria.dart';
 import 'package:da_minha_conta/screens/currency_converter/currency_converter_screen.dart';
+import 'package:da_minha_conta/screens/orcamento/novo_orcamento.dart';
 import 'package:da_minha_conta/screens/receitas/listar_receitas.dart';
 import 'package:da_minha_conta/screens/contas/nova_conta.dart';
 import 'package:da_minha_conta/screens/despesas/nova_despesa.dart';
@@ -185,6 +186,24 @@ class HomePage extends StatelessWidget {
                   Icon(Icons.category, size: 48.0),
                   SizedBox(height: 8.0),
                   Text('Nova Categoria de Despesa', textAlign: TextAlign.center),
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const NovoOrcamento()),
+              );
+            },
+            child: Card(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.calculate, size: 48.0),
+                  SizedBox(height: 8.0),
+                  Text('Novo Orçamento', textAlign: TextAlign.center),
                 ],
               ),
             ),

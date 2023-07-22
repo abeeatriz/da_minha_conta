@@ -1,16 +1,16 @@
 import 'package:da_minha_conta/model/categoria.dart';
 
 class Orcamento {
-  final int id;
+  final int? id;
   final String descricao;
   final double valor;
-  final Categoria? categoria;
+  final Categoria categoria;
 
   Orcamento({
-    required this.id,
+    this.id,
     required this.descricao,
     required this.valor,
-    this.categoria,
+    required this.categoria,
   });
 
   Map<String, dynamic> toMap() {
@@ -18,7 +18,7 @@ class Orcamento {
       'id': id,
       'descricao': descricao,
       'valor': valor,
-      'categoria': categoria?.id,
+      'categoria': categoria.id,
     };
   }
 
