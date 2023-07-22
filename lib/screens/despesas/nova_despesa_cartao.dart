@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:da_minha_conta/dao/cartao_dao.dart';
 import 'package:da_minha_conta/dao/categoria_dao.dart';
 import 'package:da_minha_conta/dao/conta_dao.dart';
@@ -12,6 +13,7 @@ import 'package:da_minha_conta/model/despesaCartao.dart';
 import 'package:da_minha_conta/model/transacao.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class NovaDespesaCartao extends StatefulWidget {
@@ -37,6 +39,7 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
   String _recorrencia = 'Única';
   Categoria? _categoriaSelecionada;
   Cartao? _cartaoSelecionado;
+  File? _imagemSelecionada;
 
   final List<String> _recorrenciaOptions = [
     'Única',
@@ -122,6 +125,16 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
     }
   }
 
+   Future<void> _selectImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imagemSelecionada = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,6 +168,7 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
               ),
               const SizedBox(height: 16.0),
               TextFormField(
+                decoration: const InputDecoration(labelText: 'Valor'),
                 controller: _valorController,
                 keyboardType: TextInputType.number,
                 validator: (value) {
@@ -245,6 +259,22 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
                   return null;
                 },
               ),
+              const SizedBox(height: 16.0),
+              Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _imagemSelecionada != null
+                            ? 'Imagem selecionada'
+                            : 'Nenhuma imagem selecionada',
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.image),
+                      onPressed: _selectImage,
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
