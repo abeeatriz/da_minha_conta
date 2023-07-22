@@ -116,7 +116,9 @@ class DatabaseHelper {
 
   void insertDefaultDataInDB(Database db) async {
     Map<String, dynamic> carteira = {"saldo": 0.0, "banco": "Outro", "descricao": "Carteira"};
-
     await db.insert('conta', carteira);
+
+    Map<String, dynamic> outros = {"descricao": "Outros"};
+    await db.insert('categoria', outros);
   }
 }
