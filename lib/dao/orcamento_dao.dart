@@ -49,7 +49,7 @@ class OrcamentoDAO {
         id: maps[0]['id'],
         descricao: maps[0]['descricao'],
         valor: maps[0]['valor'],
-        categoria: await _categoriaDAO.getCategoria(maps[0]['categoria']),
+        categoria: (await _categoriaDAO.getCategoria(maps[0]['categoria']))!,
       );
     }
 
@@ -71,7 +71,7 @@ Future<List<Orcamento>> getOrcamentos() async {
       id: map['id'],
       descricao: map['descricao'],
       valor: map['valor'],
-      categoria: categoria,
+      categoria: categoria!,
     );
     orcamentos.add(orcamento);
   }
