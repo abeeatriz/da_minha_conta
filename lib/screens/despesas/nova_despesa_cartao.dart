@@ -2,8 +2,15 @@ import 'package:da_minha_conta/dao/cartao_dao.dart';
 import 'package:da_minha_conta/dao/categoria_dao.dart';
 import 'package:da_minha_conta/dao/conta_dao.dart';
 import 'package:da_minha_conta/dao/database_helper.dart';
+import 'package:da_minha_conta/dao/despesa_cartao_dao.dart';
+import 'package:da_minha_conta/dao/despesa_dao.dart';
+import 'package:da_minha_conta/dao/transacao_dao.dart';
 import 'package:da_minha_conta/model/cartao.dart';
 import 'package:da_minha_conta/model/categoria.dart';
+import 'package:da_minha_conta/model/despesa.dart';
+import 'package:da_minha_conta/model/despesaCartao.dart';
+import 'package:da_minha_conta/model/transacao.dart';
+import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -16,17 +23,28 @@ class NovaDespesaCartao extends StatefulWidget {
 
 class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
   final _formKey = GlobalKey<FormState>();
-  final _databaseHelper = DatabaseHelper();
+  final _db = DatabaseHelper();
 
   final TextEditingController _descricaoController = TextEditingController();
-  final TextEditingController _valorController = TextEditingController();
+  final _valorController = MoneyMaskedTextController(
+    leftSymbol: 'R\$ ',
+    decimalSeparator: ',',
+  );
 
   List<Categoria> _categorias = [];
   List<Cartao> _cartoes = [];
   DateTime _data = DateTime.now();
-  bool _recorrenciaMensal = false;
+  String _recorrencia = 'Única';
   Categoria? _categoriaSelecionada;
   Cartao? _cartaoSelecionado;
+
+  final List<String> _recorrenciaOptions = [
+    'Única',
+    'Diária',
+    'Semanal',
+    'Mensal',
+    'Anual',
+  ];
 
   @override
   void initState() {
@@ -36,8 +54,8 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
   }
 
   Future<void> carregarCartoes() async {
-    ContaDAO contaDao = ContaDAO(_databaseHelper);
-    List<Cartao> cartoesDoBanco = await CartaoDAO(_databaseHelper, contaDao).getCartoes();
+    ContaDAO contaDao = ContaDAO(_db);
+    List<Cartao> cartoesDoBanco = await CartaoDAO(_db, contaDao).getCartoes();
 
     setState(() {
       _cartoes = cartoesDoBanco;
@@ -45,7 +63,7 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
   }
 
   Future<void> carregarCategorias() async {
-    List<Categoria> categorias = await CategoriaDAO(_databaseHelper).getCategorias();
+    List<Categoria> categorias = await CategoriaDAO(_db).getCategorias();
 
     setState(() {
       _categorias = categorias;
@@ -66,11 +84,55 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
     }
   }
 
+  void saveDespesaCartao() async {
+    if (_formKey.currentState!.validate()) {
+      final descricao = _descricaoController.text;
+      final valor = _valorController.numberValue;
+      final recorrencia = _recorrencia;
+      final data = _data;
+
+      Transacao transacao = Transacao(descricao: descricao, valor: valor, data: data, recorrencia: recorrencia);
+      Despesa despesa = Despesa(transacao: transacao, categoria: _categoriaSelecionada!);
+      DespesaCartao despesaCartao = DespesaCartao(despesa: despesa, cartao: _cartaoSelecionado!);
+
+      int idInserido = await DespesaCartaoDAO(_db, DespesaDAO(_db, TransacaoDAO(_db), CategoriaDAO(_db)), CartaoDAO(_db, ContaDAO(_db)))
+          .insertDespesaCartao(despesaCartao);
+
+      if (idInserido != 0) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Despesa inserida com sucesso! ID: $idInserido',
+              ),
+            ),
+          );
+        });
+      } else {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Falha ao inserir o registro.',
+              ),
+            ),
+          );
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nova Despesa de Cartão'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: saveDespesaCartao,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -118,21 +180,27 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
                 ],
               ),
               const SizedBox(height: 16.0),
-              Row(
-                children: [
-                  Checkbox(
-                    value: _recorrenciaMensal,
-                    onChanged: (value) {
-                      setState(() {
-                        _recorrenciaMensal = value ?? false;
-                      });
-                    },
-                  ),
-                  const Text('Recorrência Mensal'),
-                ],
+              DropdownButtonFormField<String>(
+                decoration: const InputDecoration(labelText: 'Recorrência'),
+                value: _recorrencia,
+                onChanged: (value) {
+                  setState(() {
+                    _recorrencia = value ?? _recorrenciaOptions.first;
+                  });
+                },
+                items: _recorrenciaOptions.map((option) {
+                  return DropdownMenuItem<String>(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList(),
+                validator: (value) {
+                  if (value == null) {
+                    return 'Por favor, selecione a recorrência';
+                  }
+                  return null;
+                },
               ),
-              const SizedBox(height: 16.0),
-              // Inserir campo de imagem aqui
               const SizedBox(height: 16.0),
               DropdownButtonFormField<Categoria>(
                 value: _categoriaSelecionada,
@@ -180,15 +248,6 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
                   }
                   return null;
                 },
-              ),
-              const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() == true) {
-                    // Realizar o salvamento da despesa no banco de dados
-                  }
-                },
-                child: const Text('Salvar'),
               ),
             ],
           ),
