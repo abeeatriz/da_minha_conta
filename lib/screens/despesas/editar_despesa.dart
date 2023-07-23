@@ -138,7 +138,7 @@ class EditarDespesaFormState extends State<EditarDespesaForm> {
     List<Cartao> cartoes = await CartaoDAO(_db, ContaDAO(_db)).getCartoes();
     setState(() {
       _cartaoOptions = cartoes;
-      selectConta();
+      selectCartao();
     });
   }
 
