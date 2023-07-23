@@ -318,7 +318,7 @@ class EditarDespesaFormState extends State<EditarDespesaForm> {
                 );
               }).toList(),
               validator: (value) {
-                if (value == null) {
+                if (value == null && _cartao == null) {
                   return 'Por favor, selecione a conta';
                 }
                 return null;
@@ -344,8 +344,8 @@ class EditarDespesaFormState extends State<EditarDespesaForm> {
               decoration: const InputDecoration(
                 labelText: 'Cartão',
               ),
-              validator: (cartao) {
-                if (cartao == null || cartao.id == null) {
+              validator: (value) {
+                if (value == null && _conta == null) {
                   return 'Por favor, selecione um cartão';
                 }
                 return null;
