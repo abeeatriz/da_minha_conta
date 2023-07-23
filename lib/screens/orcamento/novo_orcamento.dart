@@ -42,7 +42,7 @@ class NovoOrcamentoState extends State<NovoOrcamento> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nova Conta'),
+        title: const Text('Novo Orçamento'),
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
