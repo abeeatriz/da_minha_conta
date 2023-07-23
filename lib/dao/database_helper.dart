@@ -32,18 +32,18 @@ class DatabaseHelper {
         await db.execute('''
           CREATE TABLE conta (
             id INTEGER PRIMARY KEY,
-            saldo NOT NULL DOUBLE,
-            banco NOT NULL VARCHAR(100),
-            descricao NOT NULL VARCHAR(100)
+            saldo DOUBLE NOT NULL,
+            banco VARCHAR(100) NOT NULL,
+            descricao VARCHAR(100) NOT NULL
           )
         ''');
 
         await db.execute('''
           CREATE TABLE cartao (
             id INTEGER PRIMARY KEY,
-            descricao NOT NULL VARCHAR(100),
-            limite NOT NULL DOUBLE,
-            data_vencimento NOT NULL DATE,
+            descricao VARCHAR(100) NOT NULL,
+            limite DOUBLE NOT NULL,
+            data_vencimento DATE NOT NULL,
             conta INTEGER REFERENCES conta(id)
           )
         ''');
@@ -51,26 +51,26 @@ class DatabaseHelper {
         await db.execute('''
           CREATE TABLE categoria (
             id INTEGER PRIMARY KEY,
-            descricao NOT NULL VARCHAR(100)
+            descricao VARCHAR(100) NOT NULL
           )
         ''');
 
         await db.execute('''
           CREATE TABLE orcamento (
             id INTEGER PRIMARY KEY,
-            descricao NOT NULL VARCHAR(100),
-            valor NOT NULL DOUBLE,
-            categoria NOT NULL INTEGER REFERENCES categoria(id)
+            descricao VARCHAR(100) NOT NULL,
+            valor DOUBLE NOT NULL,
+            categoria INTEGER NOT NULL REFERENCES categoria(id)
           )
         ''');
 
         await db.execute('''
           CREATE TABLE transacao (
             id INTEGER PRIMARY KEY,
-            descricao NOT NULL VARCHAR(100),
-            valor NOT NULL DOUBLE,
-            data NOT NULL TEXT,
-            recorrencia NOT NULL VARCHAR(20),
+            descricao VARCHAR(100) NOT NULL,
+            valor DOUBLE NOT NULL,
+            data TEXT NOT NULL,
+            recorrencia VARCHAR(20) NOT NULL,
             imagem TEXT
           )
         ''');
@@ -78,7 +78,7 @@ class DatabaseHelper {
         await db.execute('''
           CREATE TABLE receita (
             transacao INTEGER NOT NULL REFERENCES transacao(id) ON DELETE CASCADE,
-            conta NOT NULL INTEGER REFERENCES conta(id)
+            conta INTEGER NOT NULL REFERENCES conta(id)
           )
         ''');
 
