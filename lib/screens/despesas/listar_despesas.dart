@@ -4,6 +4,7 @@ import 'package:da_minha_conta/dao/database_helper.dart';
 import 'package:da_minha_conta/dao/despesa_dao.dart';
 import 'package:da_minha_conta/dao/transacao_dao.dart';
 import 'package:da_minha_conta/model/despesa.dart';
+import 'package:da_minha_conta/screens/despesas/editar_despesa.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -109,7 +110,7 @@ class DespesasScreenState extends State<DespesasScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EditarDespesaScreen(despesa),
+                        builder: (context) => EditarDespesa(despesa),
                       ),
                     );
                   },
@@ -119,24 +120,6 @@ class DespesasScreenState extends State<DespesasScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class EditarDespesaScreen extends StatelessWidget {
-  const EditarDespesaScreen(this.despesa, {Key? key}) : super(key: key);
-
-  final Despesa despesa;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Editar Despesa'),
-      ),
-      body: Container(
-          // Implemente a tela de edição da despesa aqui
-          ),
     );
   }
 }
