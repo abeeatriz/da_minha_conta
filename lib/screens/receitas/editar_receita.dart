@@ -70,7 +70,7 @@ class EditarReceitaFormState extends State<EditarReceitaForm> {
   );
   late String _recorrencia = widget.receita.transacao.recorrencia;
   late DateTime _data = widget.receita.transacao.data;
-  late Conta _conta;
+  Conta? _conta;
   late String? _imagem = widget.receita.transacao.imagem;
 
   late int idTransacao = widget.receita.transacao.id!;
@@ -90,13 +90,13 @@ class EditarReceitaFormState extends State<EditarReceitaForm> {
   void initState() {
     super.initState();
     loadContas();
-    selectConta();
   }
 
   Future<void> loadContas() async {
     List<Conta> contas = await ContaDAO(DatabaseHelper()).getContas();
     setState(() {
       _contaOptions = contas;
+      selectConta();
     });
   }
 
@@ -125,7 +125,7 @@ class EditarReceitaFormState extends State<EditarReceitaForm> {
       final imagem = _imagem;
 
       Transacao transacao = Transacao(id: idTransacao, descricao: descricao, valor: valor, data: data, recorrencia: recorrencia, imagem: imagem);
-      Receita receita = Receita(transacao: transacao, conta: conta);
+      Receita receita = Receita(transacao: transacao, conta: conta!);
       DatabaseHelper db = DatabaseHelper();
 
       int linhasAfetadas = await ReceitaDAO(db, TransacaoDAO(db), ContaDAO(db)).atualizarReceita(receita);
@@ -133,9 +133,9 @@ class EditarReceitaFormState extends State<EditarReceitaForm> {
       if (linhasAfetadas == 1) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text(
-                'Registro inserido com sucesso! ID: $linhasAfetadas',
+                'Receita atualizada com sucesso!',
               ),
             ),
           );
@@ -145,7 +145,7 @@ class EditarReceitaFormState extends State<EditarReceitaForm> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(
-                'Falha ao inserir o registro.',
+                'Falha ao editar o registro.',
               ),
             ),
           );
