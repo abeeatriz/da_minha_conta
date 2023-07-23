@@ -25,7 +25,7 @@ class DespesaCartaoDAO {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query(
       'despesa_cartao',
-      where: 'id = ?',
+      where: 'despesa = ?',
       whereArgs: [id],
     );
 
@@ -99,8 +99,8 @@ class DespesaCartaoDAO {
   Future<int> deleteDespesaCartao(int id) async {
     final db = await _databaseHelper.database;
     return await db.delete(
-      'despesa',
-      where: 'id = ?',
+      'despesa_cartao',
+      where: 'despesa = ?',
       whereArgs: [id],
     );
   }
