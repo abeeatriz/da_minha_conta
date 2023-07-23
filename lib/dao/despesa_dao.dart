@@ -25,15 +25,15 @@ class DespesaDAO {
   Future<int> atualizarDespesa(Despesa despesa) async {
     final db = await _databaseHelper.database;
 
-    final transacaoId = await _transacaoDAO.atualizarTransacao(despesa.transacao);
+    int registrosAlterados = await _transacaoDAO.atualizarTransacao(despesa.transacao);
 
-    final int linhasAfetadas = await db.update(
+    registrosAlterados += await db.update(
       'despesa',
       despesa.toMap(),
       where: 'transacao = ?',
-      whereArgs: [transacaoId],
+      whereArgs: [despesa.transacao.id],
     );
-    return linhasAfetadas;
+    return registrosAlterados;
   }
 
   Future<int> excluirDespesa(int despesaId) async {

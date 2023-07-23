@@ -14,13 +14,13 @@ class TransacaoDAO {
 
   Future<int> atualizarTransacao(Transacao transacao) async {
     final db = await _databaseHelper.database;
-    final int linhasAfetadas = await db.update(
+    final int registrosAlterados = await db.update(
       'transacao',
       transacao.toMap(),
       where: 'id = ?',
       whereArgs: [transacao.id],
     );
-    return linhasAfetadas;
+    return registrosAlterados;
   }
 
   Future<int> excluirTransacao(int transacaoId) async {

@@ -27,15 +27,15 @@ class ReceitaDAO {
   Future<int> atualizarReceita(Receita receita) async {
     final db = await _databaseHelper.database;
 
-    final transacaoId = await _transacaoDAO.atualizarTransacao(receita.transacao);
+    int registrosAlterados = await _transacaoDAO.atualizarTransacao(receita.transacao);
 
-    final int linhasAfetadas = await db.update(
+    registrosAlterados += await db.update(
       'receita',
       receita.toMap(),
       where: 'transacao = ?',
-      whereArgs: [transacaoId],
+      whereArgs: [receita.transacao.id],
     );
-    return linhasAfetadas;
+    return registrosAlterados;
   }
 
   // Função para excluir uma receita do banco de dados
