@@ -190,7 +190,7 @@ class EditarDespesaFormState extends State<EditarDespesaForm> {
   }
 
   void showDbResponse(int linhasAfetadas) {
-    if (linhasAfetadas == 1) {
+    if (linhasAfetadas > 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

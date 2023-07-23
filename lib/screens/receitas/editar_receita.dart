@@ -130,7 +130,7 @@ class EditarReceitaFormState extends State<EditarReceitaForm> {
 
       int linhasAfetadas = await ReceitaDAO(db, TransacaoDAO(db), ContaDAO(db)).atualizarReceita(receita);
 
-      if (linhasAfetadas == 1) {
+      if (linhasAfetadas > 0) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
