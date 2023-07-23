@@ -125,9 +125,8 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
     }
   }
 
-   Future<void> _selectImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<void> _selectImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _imagemSelecionada = File(pickedFile.path);
@@ -260,21 +259,15 @@ class NovaDespesaCartaoState extends State<NovaDespesaCartao> {
                 },
               ),
               const SizedBox(height: 16.0),
-              Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        _imagemSelecionada != null
-                            ? 'Imagem selecionada'
-                            : 'Nenhuma imagem selecionada',
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.image),
-                      onPressed: _selectImage,
-                    ),
-                  ],
+              InkWell(
+                onTap: () {
+                  _selectImage();
+                },
+                child: InputDecorator(
+                  decoration: const InputDecoration(labelText: 'Anexar imagem'),
+                  child: _imagemSelecionada != null ? Image.file(_imagemSelecionada!) : const SizedBox(),
                 ),
+              ),
             ],
           ),
         ),
