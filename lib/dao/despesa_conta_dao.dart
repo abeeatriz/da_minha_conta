@@ -14,6 +14,10 @@ class DespesaContaDAO {
 
   Future<int> insertDespesaConta(DespesaConta despesaConta) async {
     final db = await _databaseHelper.database;
+
+    final despesaId = await _despesaDAO.inserirDespesa(despesaConta.despesa);
+    despesaConta.despesa.id = despesaId;
+
     return await db.insert('despesa_conta', despesaConta.toMap());
   }
 
