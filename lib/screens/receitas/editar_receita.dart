@@ -70,7 +70,7 @@ class EditarReceitaFormState extends State<EditarReceitaForm> {
   );
   late String _recorrencia = widget.receita.transacao.recorrencia;
   late DateTime _data = widget.receita.transacao.data;
-  late Conta _conta = widget.receita.conta;
+  late Conta _conta;
   late String? _imagem = widget.receita.transacao.imagem;
 
   late int idTransacao = widget.receita.transacao.id!;
@@ -90,6 +90,18 @@ class EditarReceitaFormState extends State<EditarReceitaForm> {
   void initState() {
     super.initState();
     loadContas();
+    selectConta();
+  }
+
+  Future<void> loadContas() async {
+    List<Conta> contas = await ContaDAO(DatabaseHelper()).getContas();
+    setState(() {
+      _contaOptions = contas;
+    });
+  }
+
+  void selectConta() {
+    _conta = _contaOptions.firstWhere((conta) => conta.id == widget.receita.conta.id);
   }
 
   @override
@@ -102,8 +114,6 @@ class EditarReceitaFormState extends State<EditarReceitaForm> {
   bool validateForm() {
     return _formKey.currentState!.validate();
   }
-
-  void getReceita() async {}
 
   void updateReceita() async {
     if (validateForm()) {
@@ -142,15 +152,6 @@ class EditarReceitaFormState extends State<EditarReceitaForm> {
         });
       }
     }
-  }
-
-  Future<void> loadContas() async {
-    // Lógica para buscar as contas do banco de dados
-    List<Conta> contas = await ContaDAO(DatabaseHelper()).getContas();
-
-    setState(() {
-      _contaOptions = contas;
-    });
   }
 
   Future<void> _selectDate() async {
