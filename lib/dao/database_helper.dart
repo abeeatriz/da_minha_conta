@@ -32,18 +32,18 @@ class DatabaseHelper {
         await db.execute('''
           CREATE TABLE conta (
             id INTEGER PRIMARY KEY,
-            saldo DOUBLE,
-            banco VARCHAR(100),
-            descricao VARCHAR(100)
+            saldo NOT NULL DOUBLE,
+            banco NOT NULL VARCHAR(100),
+            descricao NOT NULL VARCHAR(100)
           )
         ''');
 
         await db.execute('''
           CREATE TABLE cartao (
             id INTEGER PRIMARY KEY,
-            descricao VARCHAR(100),
-            limite DOUBLE,
-            data_vencimento DATE,
+            descricao NOT NULL VARCHAR(100),
+            limite NOT NULL DOUBLE,
+            data_vencimento NOT NULL DATE,
             conta INTEGER REFERENCES conta(id)
           )
         ''');
@@ -51,56 +51,56 @@ class DatabaseHelper {
         await db.execute('''
           CREATE TABLE categoria (
             id INTEGER PRIMARY KEY,
-            descricao VARCHAR(100)
+            descricao NOT NULL VARCHAR(100)
           )
         ''');
 
         await db.execute('''
           CREATE TABLE orcamento (
             id INTEGER PRIMARY KEY,
-            descricao VARCHAR(100),
-            valor DOUBLE,
-            categoria INTEGER REFERENCES categoria(id)
+            descricao NOT NULL VARCHAR(100),
+            valor NOT NULL DOUBLE,
+            categoria NOT NULL INTEGER REFERENCES categoria(id)
           )
         ''');
 
         await db.execute('''
           CREATE TABLE transacao (
             id INTEGER PRIMARY KEY,
-            descricao VARCHAR(100),
-            valor DOUBLE,
-            data TEXT,
-            recorrencia VARCHAR(20),
+            descricao NOT NULL VARCHAR(100),
+            valor NOT NULL DOUBLE,
+            data NOT NULL TEXT,
+            recorrencia NOT NULL VARCHAR(20),
             imagem TEXT
           )
         ''');
 
         await db.execute('''
           CREATE TABLE receita (
-            transacao INTEGER REFERENCES transacao(id) ON DELETE CASCADE,
-            conta INTEGER REFERENCES conta(id)
+            transacao INTEGER NOT NULL REFERENCES transacao(id) ON DELETE CASCADE,
+            conta NOT NULL INTEGER REFERENCES conta(id)
           )
         ''');
 
         await db.execute('''
           CREATE TABLE despesa (
             id INTEGER PRIMARY KEY,
-            transacao INTEGER REFERENCES transacao(id) ON DELETE CASCADE,
-            categoria INTEGER REFERENCES categoria(id)
+            transacao INTEGER NOT NULL REFERENCES transacao(id) ON DELETE CASCADE,
+            categoria INTEGER NOT NULL REFERENCES categoria(id)
           )
         ''');
 
         await db.execute('''
           CREATE TABLE despesa_conta (
-            despesa INTEGER REFERENCES despesa(id) ON DELETE CASCADE,
-            conta INTEGER REFERENCES conta(id)
+            despesa INTEGER NOT NULL REFERENCES despesa(id) ON DELETE CASCADE,
+            conta INTEGER NOT NULL REFERENCES conta(id)
           )
         ''');
 
         await db.execute('''
           CREATE TABLE despesa_cartao (
-            despesa INTEGER REFERENCES despesa(id) ON DELETE CASCADE,
-            cartao INTEGER REFERENCES cartao(id)
+            despesa INTEGER NOT NULL REFERENCES despesa(id) ON DELETE CASCADE,
+            cartao INTEGER NOT NULL REFERENCES cartao(id)
           )
         ''');
 
