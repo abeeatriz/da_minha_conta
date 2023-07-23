@@ -32,17 +32,17 @@ class _NovaReceitaState extends State<NovaReceita> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nova Receita'),
+        title: const Text('Nova Receita'),
         backgroundColor: Colors.lightGreen[800],
         actions: [
           IconButton(
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
             onPressed: saveReceita,
           ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
         child: NovaReceitaForm(key: _formKey),
       ),
     );
@@ -174,7 +174,7 @@ class NovaReceitaFormState extends State<NovaReceitaForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextFormField(
-            decoration: InputDecoration(labelText: 'Descrição'),
+            decoration: const InputDecoration(labelText: 'Descrição'),
             validator: (value) {
               if (value?.isEmpty == true) {
                 return 'Por favor, insira a descrição';
@@ -184,7 +184,7 @@ class NovaReceitaFormState extends State<NovaReceitaForm> {
             controller: _descricaoController,
           ),
           TextFormField(
-            decoration: InputDecoration(labelText: 'Valor'),
+            decoration: const InputDecoration(labelText: 'Valor'),
             keyboardType: TextInputType.number,
             validator: (value) {
               if (value?.isEmpty == true) {
@@ -222,17 +222,17 @@ class NovaReceitaFormState extends State<NovaReceitaForm> {
             child: InputDecorator(
               decoration: InputDecoration(
                 labelText: 'Data',
-                hintText: _data == null ? 'Selecione uma data' : _data.toString(),
+                hintText: _data.toString(),
               ),
               child: SizedBox(
                 child: Text(
-                  _data != null ? '${_data.day}/${_data.month}/${_data.year}' : 'Nenhuma data selecionada',
+                  '${_data.day}/${_data.month}/${_data.year}',
                 ),
               ),
             ),
           ),
           DropdownButtonFormField(
-            decoration: InputDecoration(labelText: 'Conta'),
+            decoration: const InputDecoration(labelText: 'Conta'),
             value: _conta,
             onChanged: (value) {
               setState(() {
