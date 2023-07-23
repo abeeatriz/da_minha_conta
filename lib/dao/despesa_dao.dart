@@ -1,7 +1,10 @@
 import 'package:da_minha_conta/dao/categoria_dao.dart';
 import 'package:da_minha_conta/dao/database_helper.dart';
 import 'package:da_minha_conta/dao/transacao_dao.dart';
+import 'package:da_minha_conta/model/categoria.dart';
+import 'package:da_minha_conta/model/conta.dart';
 import 'package:da_minha_conta/model/despesa.dart';
+import 'package:da_minha_conta/model/transacao.dart';
 
 class DespesaDAO {
   final DatabaseHelper _databaseHelper;
@@ -73,4 +76,32 @@ class DespesaDAO {
 
     return despesas;
   }
+
+  // Função para obter as despesas do banco de dados de um determinado mês
+Future<List<Despesa>> getDespesasPorMes(int month, int year) async {
+  final db = await _databaseHelper.database;
+  final List<Map<String, dynamic>> maps = await db.rawQuery('''
+    SELECT d.* 
+    FROM despesa d 
+    INNER JOIN transacao t ON d.transacao = t.id
+    WHERE strftime('%m', t.data) = ? AND strftime('%Y', t.data) = ?
+  ''', [month.toString().padLeft(2, '0'), year.toString()]);
+
+  List<Despesa> despesas = [];
+
+  for (var map in maps) {
+    final despesaId = map['id'];
+    final transacaoId = map['transacao'];
+    Transacao? transacao = await _transacaoDAO.getTransacao(transacaoId);
+    final categoriaId = map['categoria'];
+    Categoria? categoria = await _categoriaDAO.getCategoria(categoriaId);
+
+    if (transacao != null && categoria != null) {
+      Despesa despesa = Despesa(id: despesaId, transacao: transacao, categoria: categoria);
+      despesas.add(despesa);
+    }
+  }
+
+  return despesas;
+}
 }
