@@ -171,7 +171,7 @@ class EditarDespesaFormState extends State<EditarDespesaForm> {
       final categoria = _categoria;
 
       Transacao transacao = Transacao(id: idTransacao, descricao: descricao, valor: valor, data: data, recorrencia: recorrencia, imagem: imagem);
-      Despesa despesa = Despesa(transacao: transacao, categoria: categoria);
+      Despesa despesa = Despesa(id: idDespesa, transacao: transacao, categoria: categoria);
 
       int linhasAfetadas = 0;
 
