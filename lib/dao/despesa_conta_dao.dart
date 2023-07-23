@@ -45,7 +45,7 @@ class DespesaContaDAO {
     final db = await _databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query(
       'despesa_conta',
-      where: 'id = ?',
+      where: 'despesa = ?',
       whereArgs: [id],
     );
 
@@ -84,18 +84,21 @@ class DespesaContaDAO {
 
   Future<int> updateDespesaConta(DespesaConta despesaConta) async {
     final db = await _databaseHelper.database;
+
+    final despesaId = await _despesaDAO.atualizarDespesa(despesaConta.despesa);
+
     return await db.update(
-      'despesa',
+      'despesa_conta',
       despesaConta.toMap(),
-      where: 'id = ?',
-      whereArgs: [despesaConta.despesa],
+      where: 'despesa = ?',
+      whereArgs: [despesaId],
     );
   }
 
   Future<int> deleteDespesaConta(int id) async {
     final db = await _databaseHelper.database;
     return await db.delete(
-      'despesa',
+      'despesa_conta',
       where: 'id = ?',
       whereArgs: [id],
     );

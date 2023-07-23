@@ -17,7 +17,7 @@ class DespesaCartaoDAO {
 
     final despesaId = await _despesaDAO.inserirDespesa(despesaCartao.despesa);
     despesaCartao.despesa.id = despesaId;
-    
+
     return await db.insert('despesa_cartao', despesaCartao.toMap());
   }
 
@@ -85,11 +85,14 @@ class DespesaCartaoDAO {
 
   Future<int> updateDespesaCartao(DespesaCartao despesaCartao) async {
     final db = await _databaseHelper.database;
+
+    final despesaId = await _despesaDAO.atualizarDespesa(despesaCartao.despesa);
+
     return await db.update(
-      'despesa',
+      'despesa_cartao',
       despesaCartao.toMap(),
-      where: 'id = ?',
-      whereArgs: [despesaCartao.despesa],
+      where: 'despesa = ?',
+      whereArgs: [despesaId],
     );
   }
 
