@@ -4,6 +4,7 @@ import 'package:da_minha_conta/dao/database_helper.dart';
 import 'package:da_minha_conta/dao/receita_dao.dart';
 import 'package:da_minha_conta/dao/transacao_dao.dart';
 import 'package:da_minha_conta/model/receita.dart';
+import 'package:da_minha_conta/screens/receitas/editar_receita.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -49,7 +50,7 @@ class ReceitasScreenState extends State<ReceitasScreen> {
     });
   }
 
-    void goToPreviousMonth(DateTime previousMonth) {
+  void goToPreviousMonth(DateTime previousMonth) {
     setState(() {
       selectedMonth = previousMonth;
     });
@@ -104,12 +105,10 @@ class ReceitasScreenState extends State<ReceitasScreen> {
                   subtitle: Text(DateFormat('dd/MM/yyyy').format(receita.transacao.data)),
                   trailing: Text('R\$ ${receita.transacao.valor.toStringAsFixed(2)}'),
                   onTap: () {
-                    // Navegar para a tela de edição da receita específica
-                    // Passar a receita como argumento se necessário
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EditarReceitaScreen(receita),
+                        builder: (context) => EditarReceita(receita),
                       ),
                     );
                   },
@@ -119,24 +118,6 @@ class ReceitasScreenState extends State<ReceitasScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class EditarReceitaScreen extends StatelessWidget {
-  const EditarReceitaScreen(this.receita, {Key? key}) : super(key: key);
-
-  final Receita receita;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Editar Receita'),
-      ),
-      body: Container(
-          // Implemente a tela de edição da receita aqui
-          ),
     );
   }
 }
